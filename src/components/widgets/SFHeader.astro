@@ -1,0 +1,244 @@
+---
+// Speed & Function Header Component
+export interface Props {
+  id?: string;
+}
+
+const { id = 'header' } = Astro.props;
+---
+
+<header class="sf-header" {...id ? { id } : {}}>
+  <div class="sf-header__content">
+    <a href="/" class="sf-logo">S&F</a>
+
+    <button
+      class="sf-menu"
+      id="nav-icon"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+      aria-controls="main-navigation"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    
+    <nav
+      id="main-navigation"
+      class="sf-nav"
+      data-menu
+      aria-label="Main navigation"
+    >
+      <ol class="sf-nav__list">
+        <li>
+          <a aria-label="HOME" href="/" class="active">HOME</a>
+        </li>
+        <li>
+          <a aria-label="ABOUT US" href="/about-us">ABOUT US</a>
+        </li>
+        <li>
+          <a aria-label="BUILT DIFFERENTLY" href="/build-differently">BUILT DIFFERENTLY</a>
+        </li>
+        <li>
+          <a aria-label="SOLUTIONS" href="/solutions">SOLUTIONS</a>
+        </li>
+        <li>
+          <a aria-label="HOW WE DELIVER" href="/how-we-deliver">HOW WE DELIVER</a>
+        </li>
+        <li>
+          <a aria-label="CASE STUDIES" href="/cases">CASE STUDIES</a>
+        </li>
+        <li>
+          <a aria-label="MEET THE TEAM" href="/meet-the-team">MEET THE TEAM</a>
+        </li>
+        <li>
+          <a aria-label="CAREERS" href="/careers">CAREERS</a>
+        </li>
+        <li>
+          <a aria-label="LET'S TALK" href="/let-s-talk">LET'S TALK</a>
+        </li>
+      </ol>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .sf-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: white;
+    border-bottom: 1px solid #eee;
+  }
+
+  .sf-header__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .sf-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #000;
+  }
+
+  .sf-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+    gap: 4px;
+  }
+
+  .sf-menu span {
+    width: 20px;
+    height: 2px;
+    background: #000;
+    transition: all 0.3s ease;
+    display: block;
+  }
+
+  .sf-menu.open span:first-child {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .sf-menu.open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .sf-menu.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+  }
+
+  .sf-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #eee;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+    z-index: 999;
+  }
+
+  .sf-nav.open {
+    display: block;
+  }
+
+  .sf-nav__list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+  }
+
+  .sf-nav__list li {
+    border-bottom: 1px solid #eee;
+  }
+
+  .sf-nav__list li:last-child {
+    border-bottom: none;
+  }
+
+  .sf-nav__list li a {
+    text-decoration: none;
+    color: #191919;
+    font-weight: 500;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+    padding: 1.25rem 2rem;
+    display: block;
+    line-height: 1.2;
+  }
+
+  .sf-nav__list li a:hover,
+  .sf-nav__list li a.active {
+    background: #f9f9f9;
+    color: #191919;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 480px) {
+    .sf-header__content {
+      padding: 1rem 1rem;
+    }
+    
+    .sf-nav__list li a {
+      padding: 1rem 1rem;
+    }
+  }
+
+  /* Add padding to body to account for fixed header */
+  :global(body) {
+    padding-top: 80px;
+  }
+</style>
+
+<script is:inline>
+  // Simple menu toggle - direct approach
+  window.addEventListener('load', function() {
+    console.log('Window loaded, initializing menu...');
+    
+    const navIcon = document.getElementById('nav-icon');
+    const mainNavigation = document.getElementById('main-navigation');
+    
+    console.log('Elements found:', { navIcon, mainNavigation });
+    
+    if (navIcon && mainNavigation) {
+      console.log('Adding click listener to menu button');
+      
+      navIcon.onclick = function(e) {
+        e.preventDefault();
+        console.log('Menu button clicked!');
+        
+        const isOpen = navIcon.classList.contains('open');
+        console.log('Current state - isOpen:', isOpen);
+        
+        if (isOpen) {
+          navIcon.classList.remove('open');
+          mainNavigation.classList.remove('open');
+          navIcon.setAttribute('aria-expanded', 'false');
+          console.log('Menu closed');
+        } else {
+          navIcon.classList.add('open');
+          mainNavigation.classList.add('open');
+          navIcon.setAttribute('aria-expanded', 'true');
+          console.log('Menu opened');
+        }
+      };
+      
+      // Close menu when clicking on links
+      const links = mainNavigation.querySelectorAll('a');
+      links.forEach(function(link) {
+        link.onclick = function() {
+          navIcon.classList.remove('open');
+          mainNavigation.classList.remove('open');
+          navIcon.setAttribute('aria-expanded', 'false');
+        };
+      });
+      
+    } else {
+      console.error('Menu elements not found!');
+    }
+  });
+</script>

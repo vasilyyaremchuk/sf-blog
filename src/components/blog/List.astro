@@ -9,12 +9,15 @@ export interface Props {
 const { posts } = Astro.props;
 ---
 
-<ul>
+<div class="space-y-16 md:space-y-20">
   {
-    posts.map((post) => (
-      <li class="mb-12 md:mb-20">
+    posts.map((post, index) => (
+      <article class="group relative">
         <Item post={post} />
-      </li>
+        {index < posts.length - 1 && (
+          <div class="absolute -bottom-8 md:-bottom-10 left-1/2 transform -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent"></div>
+        )}
+      </article>
     ))
   }
-</ul>
+</div>

@@ -1,0 +1,28 @@
+---
+// Speed & Function Footer Component
+export interface Props {
+  id?: string;
+}
+
+const { id = 'footer' } = Astro.props;
+---
+
+<footer class="sf-container" {...id ? { id } : {}}>
+  <p class="sf-copy">© 2025 S&F</p>
+</footer>
+
+<style>
+  .sf-container {
+    background: white;
+    padding: 2rem;
+    text-align: center;
+    border-top: 1px solid #eee;
+    margin-top: 4rem;
+  }
+
+  .sf-copy {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+  }
+</style>
